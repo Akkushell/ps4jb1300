@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en" manifest="cache.appcache">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>GamecrackerS Jailbreak Exploit</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+        background: #090909;
+        color: #eee5cc;
+        font:
+          15px/1.45 "Segoe UI",
+          system-ui,
+          sans-serif;
+      }
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background: radial-gradient(circle at 50% -20%, #211a0b 0, #090909 48%);
+      }
+      #brand {
+        text-align: center;
+        padding: 16px 10px 14px;
+        background: #0f0f0f;
+        border-bottom: 1px solid #5a4314;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+      }
+      #brand img {
+        width: 56px;
+        height: 56px;
+        margin: 0 auto 6px;
+        border-radius: 50%;
+        display: block;
+      }
+      #brand b {
+        display: block;
+        font-size: 21px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        color: #f4d06f;
+      }
+      #brand-details {
+        margin-top: 5px;
+        color: #d8c27a;
+        font-size: 12px;
+        letter-spacing: 0.04em;
+      }
+      #brand-details span + span {
+        margin-left: 14px;
+      }
+      #site-footer {
+        width: 100%;
+        box-sizing: border-box;
+        max-width: 760px;
+        margin: auto auto 20px;
+        padding: 22px 20px 14px;
+        border-top: 1px solid #80621c;
+        border-radius: 8px 8px 0 0;
+        background: linear-gradient(145deg, #15130d, #0c0c0c 65%);
+        box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.25);
+      }
+      #footer-grid {
+        display: grid;
+        grid-template-columns: 1.35fr 1fr 1fr;
+        gap: 22px;
+      }
+      #site-footer h2 {
+        margin: 0 0 7px;
+        color: #f4d06f;
+        font-size: 16px;
+        letter-spacing: 0.08em;
+      }
+      #site-footer h3 {
+        margin: 0 0 7px;
+        color: #d4af37;
+        font-size: 12px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      #site-footer p {
+        margin: 0;
+        color: #bdb39a;
+        font-size: 12px;
+      }
+      #site-footer a {
+        color: #e0bd58;
+        text-decoration: none;
+      }
+      #site-footer a:hover {
+        color: #fff0a8;
+        text-decoration: underline;
+      }
+      #footer-bottom {
+        margin-top: 18px;
+        padding-top: 10px;
+        border-top: 1px solid #302611;
+        text-align: center;
+        color: #706853;
+        font-size: 11px;
+      }
+      @media (max-width: 480px) {
+        #brand-details span {
+          display: block;
+        }
+        #brand-details span + span {
+          margin: 3px 0 0;
+        }
+      }
+
+      /* running: a spinner under the brand. jb.js sets body.done / body.fail / body.log. */
+      #spin {
+        position: fixed;
+        top: calc(50% + 20px);
+        left: 50%;
+        width: 46px;
+        height: 46px;
+        margin: -23px 0 0 -23px;
+        border: 4px solid #3b3017;
+        border-top-color: #d4af37;
+        border-radius: 50%;
+        animation: spin 0.9s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      #msg {
+        position: fixed;
+        top: 50%;
+        left: 0;
+        right: 0;
+        transform: translateY(-50%);
+        text-align: center;
+        font-size: 16px;
+        letter-spacing: 0.5px;
+        display: none;
+      }
+      #wrap {
+        max-width: 760px;
+        margin: 24px auto;
+        padding: 18px 20px;
+        border: 1px solid #3b3017;
+        border-radius: 8px;
+        background: rgba(15, 15, 15, 0.94);
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
+      }
+      #state,
+      #out {
+        display: none;
+      }
+
+      body.done #spin {
+        display: none;
+      }
+      body.fail #spin {
+        display: none;
+      }
+      body.fail #msg {
+        display: block;
+      }
+
+      /* ?log=1 -- the full step log, styled like the landing. */
+      body.log #spin,
+      body.log #msg {
+        display: none;
+      }
+      body.log #wrap {
+        margin: 24px auto;
+        padding: 18px 20px;
+      }
+      body.log #state {
+        display: block;
+        font-size: 22px;
+        font-weight: 700;
+        margin: 0 0 8px;
+      }
+      body.log #out {
+        display: block;
+        white-space: pre-wrap;
+        font:
+          12px/1.45 Consolas,
+          monospace;
+        background: #141209;
+        border: 1px solid #5a4314;
+        border-radius: 5px;
+        padding: 10px 12px;
+        height: calc(100vh - 141px);
+        overflow-y: auto;
+      }
+      .ok {
+        color: #d4af37;
+      }
+      .bad {
+        color: #e07a5f;
+      }
+      .warn {
+        color: #f0c75e;
+      }
+      .safe {
+        color: #d4af37;
+      }
+      .danger {
+        color: #e07a5f;
+      }
+      code {
+        color: #e0bd58;
+      }
+      @media (max-width: 480px) {
+        #wrap,
+        body.log #wrap {
+          margin: 16px 10px;
+          padding: 16px;
+        }
+        #site-footer {
+          width: auto;
+          margin: auto 10px 14px;
+          padding: 18px 16px 12px;
+        }
+        #footer-grid {
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+      }
+      :root {
+        color-scheme: dark;
+      }
+      ::selection {
+        background: #d4af37;
+        color: #090909;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="brand">
+      <img src="logo_raw.png" alt="" width="56" height="56"><b>GamecrackerS</b>
+      <div id="brand-details">
+        <span>Console Repair &amp; Support</span><span>Jailbreak Exploit</span>
+    </div>
+    <div id="spin"></div>
+    <div id="msg">GamecrackerS - Restart your PlayStation 4</div>
+    <div id="wrap">
+      <div id="state"></div>
+      <div id="out"></div>
+    </div>
+    <footer id="site-footer">
+      <div id="footer-grid">
+        <div><h2>GamecrackerS</h2><p>Trusted game console repair in Nagpur for PlayStation, Xbox, and Nintendo Switch.</p></div>
+      
+      </div>
+      <div id="footer-bottom">© 2026 GamecrackerS · Console repair, support &amp; service</div>
+    </footer>
+    <script type="module">
+      import "./jb.js?v=10";
+    </script>
+  </body>
+</html>
