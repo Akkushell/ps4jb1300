@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Akkuhell exploit</title>
+    <title>Akkushell exploit</title>
     <style>
       html,
       body {
@@ -13,11 +13,22 @@
         background: #0b0d10;
         color: #c8ced8;
         font:
-          15px/1.45 "Segoe UI",
+          32px/1.45 "Segoe UI",
           system-ui,
           sans-serif;
       }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        background: url("logo_raw.png") center / contain no-repeat;
+        opacity: 0.02;
+        pointer-events: none;
+      }
       #brand {
+        position: relative;
+        z-index: 1;
         text-align: center;
         padding: 8px 10px;
         background: #0e1116;
@@ -31,7 +42,7 @@
         vertical-align: middle;
       }
       #brand b {
-        font-size: 15px;
+        font-size: 32px;
         font-weight: 700;
         letter-spacing: 0.14em;
         color: #e6ebf2;
@@ -41,15 +52,27 @@
       /* running: a spinner under the brand. jb.js sets body.done / body.fail / body.log. */
       #spin {
         position: fixed;
+        z-index: 2;
         top: calc(50% + 20px);
         left: 50%;
-        width: 46px;
-        height: 46px;
-        margin: -23px 0 0 -23px;
-        border: 4px solid #1e2732;
-        border-top-color: #7fd0a0;
+        width: 58px;
+        height: 58px;
+        margin: -29px 0 0 -29px;
+        background: conic-gradient(
+          #4285f4 0deg 90deg,
+          #ea4335 90deg 180deg,
+          #fbbc05 180deg 270deg,
+          #34a853 270deg 360deg
+        );
         border-radius: 50%;
         animation: spin 0.9s linear infinite;
+      }
+      #spin::after {
+        content: "";
+        position: absolute;
+        inset: 7px;
+        background: #0b0d10;
+        border-radius: 50%;
       }
       @keyframes spin {
         to {
@@ -58,17 +81,33 @@
       }
       #msg {
         position: fixed;
+        z-index: 1;
         top: 50%;
         left: 0;
         right: 0;
         transform: translateY(-50%);
         text-align: center;
-        font-size: 16px;
-        letter-spacing: 0.5px;
+        font-size: 32px;
+        letter-spacing: 1px;
         display: none;
       }
       #wrap {
+        position: relative;
+        z-index: 1;
         padding: 0;
+      }
+      #footer {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+        padding: 8px 12px;
+        background: rgba(14, 17, 22, 0.94);
+        border-top: 1px solid #1e2732;
+        color: #d8c07f;
+        font-size: 32px;
+        text-align: center;
       }
       #state,
       #out {
@@ -133,20 +172,14 @@
     </style>
   </head>
   <body>
-    <div id="brand">
-      <img
-        src="logo_raw.png"
-        alt="Logo"
-        width="64"
-        height="64"
-      /><b>Akkuhell exploit</b>
-    </div>
+        <div id="brand"><img src="logo_raw.png" alt="Logo" width="64" height="64"><b>Akkuhell exploit</b><br>Playstation 4 exploit supports firmware versions 13.02, 13.04, 13.50, and 13.52</div>
     <div id="spin"></div>
-    <div id="msg">Akkuhell exploit - Restart your console</div>
+    <div id="msg">Akkushell exploit - Restart your console</div>
     <div id="wrap">
       <div id="state"></div>
       <div id="out"></div>
     </div>
+    <footer id="footer">Note: Akkushell exploit is working. So Don't turn off or restart your PlayStation 4 Console.</footer>
     <script type="module">
       import "./jb.js?v=10";
     </script>
